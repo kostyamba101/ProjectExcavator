@@ -34,6 +34,9 @@
             buttonUp = new Button();
             buttonRight = new Button();
             buttonDown = new Button();
+            buttonCreateCar = new Button();
+            comboBoxStrategy = new ComboBox();
+            buttonStrategyStep = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBoxExcavator).BeginInit();
             SuspendLayout();
             // 
@@ -51,9 +54,9 @@
             buttonCreateExcavator.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonCreateExcavator.Location = new Point(12, 472);
             buttonCreateExcavator.Name = "buttonCreateExcavator";
-            buttonCreateExcavator.Size = new Size(94, 29);
+            buttonCreateExcavator.Size = new Size(191, 29);
             buttonCreateExcavator.TabIndex = 1;
-            buttonCreateExcavator.Text = "Создать";
+            buttonCreateExcavator.Text = "Создать экскаватор";
             buttonCreateExcavator.UseVisualStyleBackColor = true;
             buttonCreateExcavator.Click += ButtonCreateExcavator_Click;
             // 
@@ -105,11 +108,45 @@
             buttonDown.UseVisualStyleBackColor = true;
             buttonDown.Click += ButtonMove_Click;
             // 
+            // buttonCreateCar
+            // 
+            buttonCreateCar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonCreateCar.Location = new Point(209, 472);
+            buttonCreateCar.Name = "buttonCreateCar";
+            buttonCreateCar.Size = new Size(191, 29);
+            buttonCreateCar.TabIndex = 6;
+            buttonCreateCar.Text = "Создать машину";
+            buttonCreateCar.UseVisualStyleBackColor = true;
+            buttonCreateCar.Click += ButtonCreateCar_Click;
+            // 
+            // comboBoxStrategy
+            // 
+            comboBoxStrategy.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxStrategy.FormattingEnabled = true;
+            comboBoxStrategy.Items.AddRange(new object[] { "К центру", "К краю" });
+            comboBoxStrategy.Location = new Point(917, 12);
+            comboBoxStrategy.Name = "comboBoxStrategy";
+            comboBoxStrategy.Size = new Size(151, 28);
+            comboBoxStrategy.TabIndex = 7;
+            // 
+            // buttonStrategyStep
+            // 
+            buttonStrategyStep.Location = new Point(974, 46);
+            buttonStrategyStep.Name = "buttonStrategyStep";
+            buttonStrategyStep.Size = new Size(94, 29);
+            buttonStrategyStep.TabIndex = 8;
+            buttonStrategyStep.Text = "Шаг";
+            buttonStrategyStep.UseVisualStyleBackColor = true;
+            buttonStrategyStep.Click += ButtonStrategyStep_Click;
+            // 
             // FormExcavator
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1080, 513);
+            Controls.Add(buttonStrategyStep);
+            Controls.Add(comboBoxStrategy);
+            Controls.Add(buttonCreateCar);
             Controls.Add(buttonDown);
             Controls.Add(buttonRight);
             Controls.Add(buttonUp);
@@ -130,5 +167,8 @@
         private Button buttonUp;
         private Button buttonRight;
         private Button buttonDown;
+        private Button buttonCreateCar;
+        private ComboBox comboBoxStrategy;
+        private Button buttonStrategyStep;
     }
 }
