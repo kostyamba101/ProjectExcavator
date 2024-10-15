@@ -23,6 +23,20 @@ namespace ProjectExcavator
         private DrawningCar? _drawningCar;
 
         private AbstractStrategy? _strategy;
+        /// <summary>
+        /// Получение объекта
+        /// </summary>
+        public DrawningCar SetCar
+        {
+            set
+            {
+                _drawningCar = value;
+                _drawningCar.SetPictureSize(pictureBoxExcavator.Width, pictureBoxExcavator.Height);
+                comboBoxStrategy.Enabled = true;
+                _strategy = null;
+                Draw();
+            }
+        }
 
         /// <summary>
         /// Конструктор формы
@@ -47,49 +61,7 @@ namespace ProjectExcavator
             _drawningCar.DrawTransport(gr);
             pictureBoxExcavator.Image = bmp;
         }
-        /// <summary>
-        /// Создание объекта класса-перемещения
-        /// </summary>
-        /// <param name="type">Тип объекта</param>
-        private void CreateObject(string type)
-        {
-            Random random = new Random();
-            switch (type)
-            {
-                case nameof(DrawningCar):
-                    _drawningCar = new DrawningCar(random.Next(100, 300), random.Next(1000, 3000),
-                        Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)));
-                    break;
-                case nameof(DrawningExcavator):
-                    _drawningCar = new DrawningExcavator(random.Next(100, 300), random.Next(1000, 3000),
-                        Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
-                        Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
-                        Convert.ToBoolean(random.Next(0, 2)), Convert.ToBoolean(random.Next(0, 2)), Convert.ToBoolean(random.Next(0, 2))
-                        );
-                    break;
-                default:
-                    return;
-            }
-            _drawningCar.SetPictureSize(pictureBoxExcavator.Width, pictureBoxExcavator.Height);
-            _drawningCar.SetPosition(random.Next(10, 100), random.Next(10, 100));
-            _strategy = null;
-            comboBoxStrategy.Enabled = true;
-            Draw();
-        }
-        /// <summary>
-        /// Обработка нажатия кнопки "Создать машину"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonCreateCar_Click(object sender, EventArgs e) => CreateObject(nameof(DrawningCar));
-
-        /// <summary>
-        /// Обработка нажатия кнопки "Создать экскаватор"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonCreateExcavator_Click(object sender, EventArgs e) => CreateObject(nameof(DrawningExcavator));
-
+        
         /// <summary>
         /// Обработка кнопок движения
         /// </summary>

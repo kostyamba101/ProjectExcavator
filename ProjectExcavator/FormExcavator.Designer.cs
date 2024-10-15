@@ -29,12 +29,10 @@
         private void InitializeComponent()
         {
             pictureBoxExcavator = new PictureBox();
-            buttonCreateExcavator = new Button();
             buttonLeft = new Button();
             buttonUp = new Button();
             buttonRight = new Button();
             buttonDown = new Button();
-            buttonCreateCar = new Button();
             comboBoxStrategy = new ComboBox();
             buttonStrategyStep = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBoxExcavator).BeginInit();
@@ -48,17 +46,6 @@
             pictureBoxExcavator.Size = new Size(1080, 513);
             pictureBoxExcavator.TabIndex = 0;
             pictureBoxExcavator.TabStop = false;
-            // 
-            // buttonCreateExcavator
-            // 
-            buttonCreateExcavator.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonCreateExcavator.Location = new Point(12, 472);
-            buttonCreateExcavator.Name = "buttonCreateExcavator";
-            buttonCreateExcavator.Size = new Size(191, 29);
-            buttonCreateExcavator.TabIndex = 1;
-            buttonCreateExcavator.Text = "Создать экскаватор";
-            buttonCreateExcavator.UseVisualStyleBackColor = true;
-            buttonCreateExcavator.Click += ButtonCreateExcavator_Click;
             // 
             // buttonLeft
             // 
@@ -108,17 +95,6 @@
             buttonDown.UseVisualStyleBackColor = true;
             buttonDown.Click += ButtonMove_Click;
             // 
-            // buttonCreateCar
-            // 
-            buttonCreateCar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonCreateCar.Location = new Point(209, 472);
-            buttonCreateCar.Name = "buttonCreateCar";
-            buttonCreateCar.Size = new Size(191, 29);
-            buttonCreateCar.TabIndex = 6;
-            buttonCreateCar.Text = "Создать машину";
-            buttonCreateCar.UseVisualStyleBackColor = true;
-            buttonCreateCar.Click += ButtonCreateCar_Click;
-            // 
             // comboBoxStrategy
             // 
             comboBoxStrategy.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -146,12 +122,10 @@
             ClientSize = new Size(1080, 513);
             Controls.Add(buttonStrategyStep);
             Controls.Add(comboBoxStrategy);
-            Controls.Add(buttonCreateCar);
             Controls.Add(buttonDown);
             Controls.Add(buttonRight);
             Controls.Add(buttonUp);
             Controls.Add(buttonLeft);
-            Controls.Add(buttonCreateExcavator);
             Controls.Add(pictureBoxExcavator);
             Name = "FormExcavator";
             Text = "Экскаватор";
@@ -162,12 +136,10 @@
         #endregion
 
         private PictureBox pictureBoxExcavator;
-        private Button buttonCreateExcavator;
         private Button buttonLeft;
         private Button buttonUp;
         private Button buttonRight;
         private Button buttonDown;
-        private Button buttonCreateCar;
         private ComboBox comboBoxStrategy;
         private Button buttonStrategyStep;
     }
