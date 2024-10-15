@@ -16,6 +16,7 @@ namespace ProjectExcavator;
 /// </summary>
 public partial class FormCarCollection : Form
 {
+    private readonly StorageCollection<DrawningCar> _storageCollection;
     /// <summary>
     /// Компания
     /// </summary>
@@ -26,6 +27,7 @@ public partial class FormCarCollection : Form
     public FormCarCollection()
     {
         InitializeComponent();
+        _storageCollection = new();
     }
     /// <summary>
     /// Выбор компании
@@ -34,12 +36,7 @@ public partial class FormCarCollection : Form
     /// <param name="e"></param>
     private void ComboBoxSelectorCompany_SelectedIndexChanged(object sender, EventArgs e)
     {
-        switch (comboBoxSelectorCompany.Text)
-        {
-            case "Хранилище":
-                _company = new Garage(pictureBox.Width, pictureBox.Height, new ArrayGenericObjects<DrawningCar>());
-                break;
-        }
+        panelCompanyTools.Enabled = false;
     }
     /// <summary>
     /// Добавление машины
@@ -62,8 +59,8 @@ public partial class FormCarCollection : Form
                 break;
             case nameof(DrawningExcavator):
                 drawningCar = new DrawningExcavator(random.Next(100, 300), random.Next(1000, 3000),
-                    Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
-                    Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
+                    GetColor(random),
+                    GetColor(random),
                     Convert.ToBoolean(random.Next(0, 2)), Convert.ToBoolean(random.Next(0, 2)), Convert.ToBoolean(random.Next(0, 2))
                     );
                 break;
@@ -184,5 +181,99 @@ public partial class FormCarCollection : Form
             return;
         }
         pictureBox.Image = _company.Show();
+    }
+    /// <summary>
+    /// Добавление коллекции
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ButtonCollectionAdd_Click(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(textBoxCollectionName.Text) || (!radioButtonList.Checked && !radioButtonMassive.Checked))
+        {
+            MessageBox.Show("Не все данные заполнены", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+
+        CollectionType collectionType = CollectionType.None;
+        if (radioButtonMassive.Checked)
+        {
+            collectionType = CollectionType.Massive;
+        }
+        else if (radioButtonList.Checked)
+        {
+            collectionType = CollectionType.List;
+        }
+
+        _storageCollection.AddCollection(textBoxCollectionName.Text, collectionType);
+        RefreshListBoxItems();
+
+    }
+    /// <summary>
+    /// Удаление коллекции
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ButtonCollectionDel_Click(object sender, EventArgs e)
+    {
+        
+        if(listBoxCollection.SelectedIndex < 0 || listBoxCollection.SelectedItem == null)
+        {
+            MessageBox.Show("Коллекция не выбрана");
+            return;
+        }
+        //спросить пользоваля через мессежбокс
+        if (MessageBox.Show("Удалить коллекцию?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+        {
+            return;
+        }
+        //удалить и обновить листбокс
+        _storageCollection.DelCollection(listBoxCollection.SelectedItem.ToString());
+        RefreshListBoxItems();
+    }
+    /// <summary>
+    /// Обновление списка в listBoxCollection
+    /// </summary>
+    private void RefreshListBoxItems()
+    {
+        listBoxCollection.Items.Clear();
+        for (int i = 0; i < _storageCollection.Keys?.Count; ++i)
+        {
+            string? colName = _storageCollection.Keys?[i];
+            if (!string.IsNullOrEmpty(colName))
+            {
+                listBoxCollection.Items.Add(colName);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Создание компании
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ButtonCreateCompany_Click(object sender, EventArgs e)
+    {
+        if (listBoxCollection.SelectedIndex < 0 || listBoxCollection.SelectedItem == null)
+        {
+            MessageBox.Show("Коллекция не выбрана");
+            return;
+        }
+        ICollectionGenericObjects<DrawningCar>? collection = _storageCollection[listBoxCollection.SelectedItem.ToString() ?? string.Empty];
+        if (collection == null)
+        {
+            MessageBox.Show("Коллекция не проиницилизирована");
+            return;
+        }
+        
+        switch (comboBoxSelectorCompany.Text)
+        {
+            case "Хранилище":
+                _company = new Garage(pictureBox.Width, pictureBox.Height, collection);
+                break;
+        }
+
+        panelCompanyTools.Enabled = true;
+        RefreshListBoxItems();
     }
 }

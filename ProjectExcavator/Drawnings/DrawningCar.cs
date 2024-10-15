@@ -103,8 +103,6 @@ public class DrawningCar
     /// <returns></returns>
     public bool SetPictureSize(int width, int height)
     {
-        // TODO проверка, что объект "влезает" в размеры поля
-        // если влезает, сохраняем границы и корректируем позицию объекта, если она была уже установлена
         if (_drawningCarWidth > width || _drawingCarHeight > height)
         {
             return false;
@@ -128,8 +126,7 @@ public class DrawningCar
             return;
         }
 
-        //TODO: если при установке объекта в эти координаты, он будет "выходить" за границы формы
-        // то надо изменить координаты, чтобы он оставался в этих границах
+        
         if (x + _drawningCarWidth > _pictureWidth || y + _drawingCarHeight > _pictureHeight)
         {
             _startPosX = _pictureWidth - _drawningCarWidth;
@@ -170,16 +167,14 @@ public class DrawningCar
                 }
                 return true;
             //Вправо
-            case DirectionType.Right:
-                //TODO: проверить работу сдвига вправо
+            case DirectionType.Right:                
                 if (_startPosX.Value + EntityCar.Step + _drawningCarWidth < _pictureWidth)
                 {
                     _startPosX += (int)EntityCar.Step;
                 }
                 return true;
             //Вниз
-            case DirectionType.Down:
-                //TODO проверить работу сдвига вниз
+            case DirectionType.Down:                
                 if (_startPosY.Value + EntityCar.Step + _drawingCarHeight < _pictureHeight)
                 {
                     _startPosY += (int)EntityCar.Step;
@@ -205,17 +200,16 @@ public class DrawningCar
         Pen pen = new(Color.Black);
         Brush mainBrush = new SolidBrush(EntityCar.MainColor);
 
-        // Границы машины (основной корпус)
-        //верхний блок
+        // Границы машины (основной корпус)        
         g.FillRectangle(mainBrush, _startPosX.Value + 50, _startPosY.Value, 30, 30);
         g.DrawRectangle(pen, _startPosX.Value + 50, _startPosY.Value, 30, 30);
-        //нижний блок
+        
         g.FillRectangle(mainBrush, _startPosX.Value + 10, _startPosY.Value + 30, 70, 30);
         g.DrawRectangle(pen, _startPosX.Value + 10, _startPosY.Value + 30, 70, 30);
-        //платформа
+
         g.FillRectangle(mainBrush, _startPosX.Value + 10, _startPosY.Value + 50, 70, 20);
         g.DrawRectangle(pen, _startPosX.Value + 10, _startPosY.Value + 50, 70, 20);
-        //не ковш, а другая штука
+        
         g.FillRectangle(mainBrush, _startPosX.Value, _startPosY.Value + 39, 10, 30);
         g.DrawRectangle(pen, _startPosX.Value, _startPosY.Value + 39, 10, 30);
     }
