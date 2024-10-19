@@ -29,6 +29,12 @@
         private void InitializeComponent()
         {
             groupBoxTools = new GroupBox();
+            panelCompanyTools = new Panel();
+            buttonAddCar = new Button();
+            buttonRefresh = new Button();
+            maskedTextBoxPosition = new MaskedTextBox();
+            buttonGoToCheck = new Button();
+            buttonRemoveCar = new Button();
             panelStorage = new Panel();
             buttonCreateCompany = new Button();
             buttonCollectionDel = new Button();
@@ -39,18 +45,11 @@
             textBoxCollectionName = new TextBox();
             labelCollectionName = new Label();
             comboBoxSelectorCompany = new ComboBox();
-            buttonRefresh = new Button();
-            buttonGoToCheck = new Button();
-            buttonRemoveCar = new Button();
-            maskedTextBoxPosition = new MaskedTextBox();
-            buttonAddExcavator = new Button();
-            buttonAddCar = new Button();
             pictureBox = new PictureBox();
-            panelCompanyTools = new Panel();
             groupBoxTools.SuspendLayout();
+            panelCompanyTools.SuspendLayout();
             panelStorage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
-            panelCompanyTools.SuspendLayout();
             SuspendLayout();
             // 
             // groupBoxTools
@@ -64,6 +63,72 @@
             groupBoxTools.TabIndex = 0;
             groupBoxTools.TabStop = false;
             groupBoxTools.Text = "Инструменты";
+            // 
+            // panelCompanyTools
+            // 
+            panelCompanyTools.Controls.Add(buttonAddCar);
+            panelCompanyTools.Controls.Add(buttonRefresh);
+            panelCompanyTools.Controls.Add(maskedTextBoxPosition);
+            panelCompanyTools.Controls.Add(buttonGoToCheck);
+            panelCompanyTools.Controls.Add(buttonRemoveCar);
+            panelCompanyTools.Enabled = false;
+            panelCompanyTools.Location = new Point(0, 372);
+            panelCompanyTools.Name = "panelCompanyTools";
+            panelCompanyTools.Size = new Size(256, 351);
+            panelCompanyTools.TabIndex = 9;
+            // 
+            // buttonAddCar
+            // 
+            buttonAddCar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            buttonAddCar.Location = new Point(3, 13);
+            buttonAddCar.Name = "buttonAddCar";
+            buttonAddCar.Size = new Size(244, 47);
+            buttonAddCar.TabIndex = 1;
+            buttonAddCar.Text = "Добавление машины";
+            buttonAddCar.UseVisualStyleBackColor = true;
+            buttonAddCar.Click += ButtonAddCar_Click;
+            // 
+            // buttonRefresh
+            // 
+            buttonRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            buttonRefresh.Location = new Point(3, 292);
+            buttonRefresh.Name = "buttonRefresh";
+            buttonRefresh.Size = new Size(244, 47);
+            buttonRefresh.TabIndex = 7;
+            buttonRefresh.Text = "Обновить";
+            buttonRefresh.UseVisualStyleBackColor = true;
+            buttonRefresh.Click += ButtonRefresh_Click;
+            // 
+            // maskedTextBoxPosition
+            // 
+            maskedTextBoxPosition.Location = new Point(6, 140);
+            maskedTextBoxPosition.Mask = "00";
+            maskedTextBoxPosition.Name = "maskedTextBoxPosition";
+            maskedTextBoxPosition.Size = new Size(238, 27);
+            maskedTextBoxPosition.TabIndex = 3;
+            maskedTextBoxPosition.ValidatingType = typeof(int);
+            // 
+            // buttonGoToCheck
+            // 
+            buttonGoToCheck.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            buttonGoToCheck.Location = new Point(3, 226);
+            buttonGoToCheck.Name = "buttonGoToCheck";
+            buttonGoToCheck.Size = new Size(244, 47);
+            buttonGoToCheck.TabIndex = 6;
+            buttonGoToCheck.Text = "Отправить на полигон";
+            buttonGoToCheck.UseVisualStyleBackColor = true;
+            buttonGoToCheck.Click += ButtonGoToCheck_Click;
+            // 
+            // buttonRemoveCar
+            // 
+            buttonRemoveCar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            buttonRemoveCar.Location = new Point(3, 173);
+            buttonRemoveCar.Name = "buttonRemoveCar";
+            buttonRemoveCar.Size = new Size(244, 47);
+            buttonRemoveCar.TabIndex = 5;
+            buttonRemoveCar.Text = "Удалить машину";
+            buttonRemoveCar.UseVisualStyleBackColor = true;
+            buttonRemoveCar.Click += ButtonRemoveCar_Click;
             // 
             // panelStorage
             // 
@@ -170,70 +235,6 @@
             comboBoxSelectorCompany.TabIndex = 0;
             comboBoxSelectorCompany.SelectedIndexChanged += ComboBoxSelectorCompany_SelectedIndexChanged;
             // 
-            // buttonRefresh
-            // 
-            buttonRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonRefresh.Location = new Point(3, 292);
-            buttonRefresh.Name = "buttonRefresh";
-            buttonRefresh.Size = new Size(244, 47);
-            buttonRefresh.TabIndex = 7;
-            buttonRefresh.Text = "Обновить";
-            buttonRefresh.UseVisualStyleBackColor = true;
-            buttonRefresh.Click += ButtonRefresh_Click;
-            // 
-            // buttonGoToCheck
-            // 
-            buttonGoToCheck.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonGoToCheck.Location = new Point(3, 226);
-            buttonGoToCheck.Name = "buttonGoToCheck";
-            buttonGoToCheck.Size = new Size(244, 47);
-            buttonGoToCheck.TabIndex = 6;
-            buttonGoToCheck.Text = "Отправить на полигон";
-            buttonGoToCheck.UseVisualStyleBackColor = true;
-            buttonGoToCheck.Click += ButtonGoToCheck_Click;
-            // 
-            // buttonRemoveCar
-            // 
-            buttonRemoveCar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonRemoveCar.Location = new Point(3, 173);
-            buttonRemoveCar.Name = "buttonRemoveCar";
-            buttonRemoveCar.Size = new Size(244, 47);
-            buttonRemoveCar.TabIndex = 5;
-            buttonRemoveCar.Text = "Удалить машину";
-            buttonRemoveCar.UseVisualStyleBackColor = true;
-            buttonRemoveCar.Click += ButtonRemoveCar_Click;
-            // 
-            // maskedTextBoxPosition
-            // 
-            maskedTextBoxPosition.Location = new Point(6, 140);
-            maskedTextBoxPosition.Mask = "00";
-            maskedTextBoxPosition.Name = "maskedTextBoxPosition";
-            maskedTextBoxPosition.Size = new Size(238, 27);
-            maskedTextBoxPosition.TabIndex = 3;
-            maskedTextBoxPosition.ValidatingType = typeof(int);
-            // 
-            // buttonAddExcavator
-            // 
-            buttonAddExcavator.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonAddExcavator.Location = new Point(3, 66);
-            buttonAddExcavator.Name = "buttonAddExcavator";
-            buttonAddExcavator.Size = new Size(244, 47);
-            buttonAddExcavator.TabIndex = 2;
-            buttonAddExcavator.Text = "Добавление экскаватора";
-            buttonAddExcavator.UseVisualStyleBackColor = true;
-            buttonAddExcavator.Click += ButtonAddExcavator_Click;
-            // 
-            // buttonAddCar
-            // 
-            buttonAddCar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonAddCar.Location = new Point(3, 13);
-            buttonAddCar.Name = "buttonAddCar";
-            buttonAddCar.Size = new Size(244, 47);
-            buttonAddCar.TabIndex = 1;
-            buttonAddCar.Text = "Добавление машины";
-            buttonAddCar.UseVisualStyleBackColor = true;
-            buttonAddCar.Click += ButtonAddCar_Click;
-            // 
             // pictureBox
             // 
             pictureBox.Dock = DockStyle.Fill;
@@ -242,20 +243,6 @@
             pictureBox.Size = new Size(840, 723);
             pictureBox.TabIndex = 1;
             pictureBox.TabStop = false;
-            // 
-            // panelCompanyTools
-            // 
-            panelCompanyTools.Controls.Add(buttonAddCar);
-            panelCompanyTools.Controls.Add(buttonAddExcavator);
-            panelCompanyTools.Controls.Add(buttonRefresh);
-            panelCompanyTools.Controls.Add(maskedTextBoxPosition);
-            panelCompanyTools.Controls.Add(buttonGoToCheck);
-            panelCompanyTools.Controls.Add(buttonRemoveCar);
-            panelCompanyTools.Enabled = false;
-            panelCompanyTools.Location = new Point(0, 372);
-            panelCompanyTools.Name = "panelCompanyTools";
-            panelCompanyTools.Size = new Size(256, 351);
-            panelCompanyTools.TabIndex = 9;
             // 
             // FormCarCollection
             // 
@@ -267,11 +254,11 @@
             Name = "FormCarCollection";
             Text = "Коллекция машин";
             groupBoxTools.ResumeLayout(false);
+            panelCompanyTools.ResumeLayout(false);
+            panelCompanyTools.PerformLayout();
             panelStorage.ResumeLayout(false);
             panelStorage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
-            panelCompanyTools.ResumeLayout(false);
-            panelCompanyTools.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -284,7 +271,6 @@
         private PictureBox pictureBox;
         private Button buttonGoToCheck;
         private Button buttonRemoveCar;
-        private Button buttonAddExcavator;
         private Button buttonRefresh;
         private Panel panelStorage;
         private Label labelCollectionName;

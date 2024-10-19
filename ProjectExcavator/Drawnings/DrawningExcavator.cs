@@ -13,10 +13,6 @@ namespace ProjectExcavator.Drawnings;
 public class DrawningExcavator : DrawningCar
 {
     /// <summary>
-    /// Экскаватор-сущность
-    /// </summary>
-    public EntityExcavator? EntityCar { get; protected set; }
-    /// <summary>
     /// Конструктор
     /// </summary>
     /// <param name="speed">скорость</param>
@@ -29,7 +25,6 @@ public class DrawningExcavator : DrawningCar
     public DrawningExcavator(int speed, double weight, Color mainColor, Color optionalColor, bool hasBusket, bool hasTube, bool hasTracks) : base(125, 85)
     {
         EntityCar = new EntityExcavator(speed, weight, mainColor, optionalColor, hasBusket, hasTube, hasTracks);
-        base.EntityCar = EntityCar;
     }
 
     /// <summary>
@@ -91,6 +86,6 @@ public class DrawningExcavator : DrawningCar
 
         }
 
-        
+
     }
 }

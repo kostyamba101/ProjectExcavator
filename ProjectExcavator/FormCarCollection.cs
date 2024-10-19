@@ -38,37 +38,31 @@ public partial class FormCarCollection : Form
     {
         panelCompanyTools.Enabled = false;
     }
+
     /// <summary>
     /// Добавление машины
     /// </summary>
-    /// <param name="type">Тип объекта</param>
-    private void CreateObject(string type)
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ButtonAddCar_Click(object sender, EventArgs e)
     {
+        FormCarConfig form = new();
+        form.AddEvent(SetCar);
+        form.Show();
+    }
 
-        if (_company == null)
+    /// <summary>
+    /// Добавление машины в коллекцию
+    /// </summary>
+    /// <param name="car"></param>
+    private void SetCar(DrawningCar car)
+    {
+        if (_company == null || car == null)
         {
             return;
         }
 
-        Random random = new Random();
-        DrawningCar drawningCar;
-        switch (type)
-        {
-            case nameof(DrawningCar):
-                drawningCar = new DrawningCar(random.Next(100, 300), random.Next(1000, 3000), GetColor(random));
-                break;
-            case nameof(DrawningExcavator):
-                drawningCar = new DrawningExcavator(random.Next(100, 300), random.Next(1000, 3000),
-                    GetColor(random),
-                    GetColor(random),
-                    Convert.ToBoolean(random.Next(0, 2)), Convert.ToBoolean(random.Next(0, 2)), Convert.ToBoolean(random.Next(0, 2))
-                    );
-                break;
-            default:
-                return;
-        }
-
-        if (_company + drawningCar)
+        if (_company + car)
         {
             MessageBox.Show("Объект добавлен");
             pictureBox.Image = _company.Show();
@@ -76,36 +70,7 @@ public partial class FormCarCollection : Form
         else
         {
             MessageBox.Show("Не удалось добавить объект");
-
         }
-    }
-    /// <summary>
-    /// Добавление машины
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void ButtonAddCar_Click(object sender, EventArgs e) => CreateObject(nameof(DrawningCar));
-    /// <summary>
-    /// Добавление экскаватора
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void ButtonAddExcavator_Click(object sender, EventArgs e) => CreateObject(nameof(DrawningExcavator));
-
-    /// <summary>
-    /// Получение цвета
-    /// </summary>
-    /// <param name="random"></param>
-    /// <returns></returns>
-    private static Color GetColor(Random random)
-    {
-        Color color = Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256));
-        ColorDialog dialog = new();
-        if (dialog.ShowDialog() == DialogResult.OK)
-        {
-            color = dialog.Color;
-        }
-        return color;
     }
     /// <summary>
     /// Удаление объекта
@@ -216,8 +181,8 @@ public partial class FormCarCollection : Form
     /// <param name="e"></param>
     private void ButtonCollectionDel_Click(object sender, EventArgs e)
     {
-        
-        if(listBoxCollection.SelectedIndex < 0 || listBoxCollection.SelectedItem == null)
+
+        if (listBoxCollection.SelectedIndex < 0 || listBoxCollection.SelectedItem == null)
         {
             MessageBox.Show("Коллекция не выбрана");
             return;
@@ -265,7 +230,7 @@ public partial class FormCarCollection : Form
             MessageBox.Show("Коллекция не проиницилизирована");
             return;
         }
-        
+
         switch (comboBoxSelectorCompany.Text)
         {
             case "Хранилище":

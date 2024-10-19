@@ -16,6 +16,15 @@ public class EntityExcavator : EntityCar
     public Color OptionalColor { get; private set; }
 
     /// <summary>
+    /// Изменение дополнительного цвета
+    /// </summary>
+    /// <param name="optionalColor"></param>
+    public void SetOptionalColor(Color optionalColor)
+    {
+        OptionalColor = optionalColor;
+    }
+
+    /// <summary>
     /// Ковш
     /// </summary>
     public bool HasBucket { get; private set; }

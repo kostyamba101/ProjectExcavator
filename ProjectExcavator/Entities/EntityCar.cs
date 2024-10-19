@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +27,15 @@ public class EntityCar
     /// Основной цвет
     /// </summary>
     public Color MainColor { get; private set; }
+
+    /// <summary>
+    /// Изменение основного цвета
+    /// </summary>
+    /// <param name="mainColor"></param>
+    public void SetMainColor(Color mainColor)
+    {
+        MainColor = mainColor;
+    }
 
     /// <summary>
     /// Шаг перемещения экскаватора, рассчитывается на основе его скорости и веса.
