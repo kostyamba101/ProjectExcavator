@@ -23,7 +23,23 @@ public class ListGenericObjects<T> : ICollectionGenericObjects<T>
 
     public int Count => _collection.Count;
 
-    public int SetMaxCount { set { if (value > 0) { _maxCount = value; } } }
+    public int MaxCount
+    {
+        get
+        {
+            return Count;
+        }
+        set
+        {
+            if (value > 0)
+            {
+                _maxCount = value;
+            }
+        }
+
+    }
+
+    public CollectionType GetCollectionType => CollectionType.List;
 
     public ListGenericObjects()
     {
@@ -77,5 +93,13 @@ public class ListGenericObjects<T> : ICollectionGenericObjects<T>
         }
         _collection.RemoveAt(position);
         return true;
+    }
+
+    public IEnumerable<T?> GetItems()
+    {
+        for (int i = 0; i < Count; ++i)
+        {
+            yield return _collection[i];
+        }
     }
 }

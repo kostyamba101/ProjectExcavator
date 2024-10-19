@@ -16,10 +16,9 @@ public interface ICollectionGenericObjects<T>
     /// Количество объектов в коллекции
     /// </summary>
     int Count { get; }
-    /// <summary>
-    /// Установка максимального количества элементов
-    /// </summary>
-    int SetMaxCount { set; }
+
+    int MaxCount { get; set; }
+
     /// <summary>
     /// Добавление объекта в коллекцию
     /// </summary>
@@ -45,4 +44,14 @@ public interface ICollectionGenericObjects<T>
     /// <param name="position">Позиция</param>
     /// <returns>Объект</returns>
     T? Get(int position);
+    /// <summary>
+    /// Получение типа коллекции
+    /// </summary>
+    CollectionType GetCollectionType { get; }
+
+    /// <summary>
+    /// Получение объектов коллекции по одному
+    /// </summary>
+    /// <returns></returns>
+    IEnumerable<T?> GetItems();
 }

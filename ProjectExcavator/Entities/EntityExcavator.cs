@@ -56,4 +56,24 @@ public class EntityExcavator : EntityCar
         HasTube = hasTube;
         HasTracks = hasTracks;
     }
+
+    public override string[] GetStringRepresentation()
+    {
+        return new string[] { nameof(EntityExcavator), Speed.ToString(), Weight.ToString(),
+            MainColor.Name, OptionalColor.Name,
+            HasBucket.ToString(), HasTube.ToString(), HasTracks.ToString()
+        };
+    }
+
+    public static EntityExcavator? CreateEntityExcavator(string[] strs)
+    {
+        if (strs.Length != 8 || strs[0] != nameof(EntityExcavator))
+        {
+            return null;
+        }
+
+        return new EntityExcavator(Convert.ToInt32(strs[1]), Convert.ToDouble(strs[2]),
+            Color.FromName(strs[3]), Color.FromName(strs[4]),
+            Convert.ToBoolean(strs[5]), Convert.ToBoolean(strs[6]), Convert.ToBoolean(strs[7]));
+    }
 }

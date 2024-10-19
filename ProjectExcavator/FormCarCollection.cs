@@ -241,4 +241,43 @@ public partial class FormCarCollection : Form
         panelCompanyTools.Enabled = true;
         RefreshListBoxItems();
     }
+    /// <summary>
+    /// Обработка нажатия "Сохранения"
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            if (_storageCollection.SaveData(saveFileDialog.FileName))
+            {
+                MessageBox.Show("Сохранение прошло успешно", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Не сохранилось", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+    /// <summary>
+    /// Обработка нажатия "Загрузка"
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (openFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            if (_storageCollection.LoadData(openFileDialog.FileName))
+            {
+                MessageBox.Show("Загрузка прошла успешно", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                RefreshListBoxItems();
+            }
+            else
+            {
+                MessageBox.Show("Не сохранилось", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
 }

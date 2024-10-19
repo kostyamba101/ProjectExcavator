@@ -95,6 +95,11 @@ public class DrawningCar
        _drawingCarHeight = drawingCarHeight;
     }
 
+    public DrawningCar(EntityCar car) : this()
+    {
+        EntityCar = new EntityCar(car.Speed, car.Weight, car.MainColor);
+    }
+
     /// <summary>
     /// Установка границ поля
     /// </summary>

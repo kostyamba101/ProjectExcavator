@@ -18,7 +18,24 @@ public class ArrayGenericObjects<T> : ICollectionGenericObjects<T>
     private T?[] _collection;
     public int Count => _collection.Length;
 
-    public int SetMaxCount { set { if (value > 0) { _collection = new T?[value]; } } }
+    public int MaxCount
+    {
+        get
+        {
+            return _collection.Length;
+        }
+        set
+        {
+            if (value > 0)
+            {
+                _collection = new T?[value];
+            }
+        }
+
+
+    }
+
+    public CollectionType GetCollectionType => CollectionType.Massive;
 
     /// <summary>
     /// Конструктор
@@ -99,5 +116,13 @@ public class ArrayGenericObjects<T> : ICollectionGenericObjects<T>
             return true;
         }
         return false;
+    }
+
+    public IEnumerable<T?> GetItems()
+    {
+        for (int i = 0; i < _collection.Length; ++i)
+        {
+            yield return _collection[i];
+        }
     }
 }

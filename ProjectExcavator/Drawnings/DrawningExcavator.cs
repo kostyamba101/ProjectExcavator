@@ -27,6 +27,12 @@ public class DrawningExcavator : DrawningCar
         EntityCar = new EntityExcavator(speed, weight, mainColor, optionalColor, hasBusket, hasTube, hasTracks);
     }
 
+    public DrawningExcavator(EntityExcavator excavator) : base(125, 85)
+    {
+        EntityCar = new EntityExcavator(excavator.Speed, excavator.Weight, excavator.MainColor, 
+            excavator.OptionalColor, excavator.HasBucket, excavator.HasTube, excavator.HasTracks);
+    }
+
     /// <summary>
     /// Прорисовка объекта
     /// </summary>

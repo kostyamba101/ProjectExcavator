@@ -54,6 +54,28 @@ public class EntityCar
         Weight = weight;
         MainColor = mainColor;
     }
+    /// <summary>
+    /// Получение строки со значениями свойств объекта класса-сущности
+    /// </summary>
+    /// <returns></returns>
+    public virtual string[] GetStringRepresentation()
+    {
+        return new[] { nameof(EntityCar), Speed.ToString(), Weight.ToString(), MainColor.Name };
+    }
+    /// <summary>
+    /// Создание объекта из массива строк
+    /// </summary>
+    /// <param name="strs"></param>
+    /// <returns></returns>
+    public static EntityCar? CreateEntityCar(string[] strs)
+    {
+        if (strs.Length != 4 || strs[0] != nameof(EntityCar))
+        {
+            return null;
+        }
+
+        return new EntityCar(Convert.ToInt32(strs[1]), Convert.ToDouble(strs[2]), Color.FromName(strs[3]));
+    }
 
 }
 
