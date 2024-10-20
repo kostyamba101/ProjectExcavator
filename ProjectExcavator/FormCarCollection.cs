@@ -1,5 +1,7 @@
-﻿using ProjectExcavator.CollectionGenericObjects;
+﻿using Microsoft.Extensions.Logging;
+using ProjectExcavator.CollectionGenericObjects;
 using ProjectExcavator.Drawnings;
+using ProjectExcavator.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,12 +24,17 @@ public partial class FormCarCollection : Form
     /// </summary>
     private AbstractCompany? _company = null;
     /// <summary>
+    /// Логгер
+    /// </summary>
+    private readonly ILogger _logger;
+    /// <summary>
     /// Конструктор
     /// </summary>
-    public FormCarCollection()
+    public FormCarCollection(ILogger<FormCarCollection> logger)
     {
         InitializeComponent();
         _storageCollection = new();
+        _logger = logger;
     }
     /// <summary>
     /// Выбор компании
@@ -57,20 +64,26 @@ public partial class FormCarCollection : Form
     /// <param name="car"></param>
     private void SetCar(DrawningCar car)
     {
-        if (_company == null || car == null)
+        try
         {
-            return;
-        }
+            if (_company == null || car == null)
+            {
+                return;
+            }
 
-        if (_company + car)
-        {
-            MessageBox.Show("Объект добавлен");
-            pictureBox.Image = _company.Show();
+            if (_company + car != -1)
+            {
+                MessageBox.Show("Объект добавлен");
+                pictureBox.Image = _company.Show();
+                _logger.LogInformation("Добавлен объект: " + car.GetDataForSave());
+            }           
         }
-        else
+        catch (CollectionOverflowException ex)
         {
-            MessageBox.Show("Не удалось добавить объект");
+            MessageBox.Show(ex.Message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            _logger.LogError("Ошибка: {Message}", ex.Message);
         }
+       
     }
     /// <summary>
     /// Удаление объекта
@@ -88,17 +101,32 @@ public partial class FormCarCollection : Form
         {
             return;
         }
+        try
+        {
+            int pos = Convert.ToInt32(maskedTextBoxPosition.Text);
+            if (_company - pos != null)
+            {
+                MessageBox.Show("Объект удален");
+                pictureBox.Image = _company.Show();
+                _logger.LogInformation("Удаление объекта по индексу " + pos);
+            }
+            else
+            {
+                MessageBox.Show("Не удалось удалить объект");
+                _logger.LogInformation("Не удалось удалить объект из коллекции по индексу " + pos);
+            }
+        }
+        catch (ObjectNotFoundException ex)
+        {
+            MessageBox.Show(ex.Message);
+            _logger.LogError("Ошибка: {Message}", ex.Message);
+        }
+        catch (PositionOutOfCollectionException ex)
+        {
+            MessageBox.Show(ex.Message);
+            _logger.LogError("Ошибка: {Message}", ex.Message);
+        }
 
-        int pos = Convert.ToInt32(maskedTextBoxPosition.Text);
-        if (_company - pos)
-        {
-            MessageBox.Show("Объект удален");
-            pictureBox.Image = _company.Show();
-        }
-        else
-        {
-            MessageBox.Show("Не удалось удалить объект");
-        }
     }
     /// <summary>
     /// Получние случайной машины
@@ -157,6 +185,7 @@ public partial class FormCarCollection : Form
         if (string.IsNullOrEmpty(textBoxCollectionName.Text) || (!radioButtonList.Checked && !radioButtonMassive.Checked))
         {
             MessageBox.Show("Не все данные заполнены", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            _logger.LogInformation("Не удалось добавить коллекцию: не все данные заполнены");
             return;
         }
 
@@ -172,6 +201,8 @@ public partial class FormCarCollection : Form
 
         _storageCollection.AddCollection(textBoxCollectionName.Text, collectionType);
         RefreshListBoxItems();
+        _logger.LogInformation("Добавлена коллекция типа " + collectionType + " с названием "
+                + textBoxCollectionName.Text);
 
     }
     /// <summary>
@@ -186,14 +217,13 @@ public partial class FormCarCollection : Form
         {
             MessageBox.Show("Коллекция не выбрана");
             return;
-        }
-        //спросить пользоваля через мессежбокс
+        }       
         if (MessageBox.Show("Удалить коллекцию?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
         {
             return;
         }
-        //удалить и обновить листбокс
-        _storageCollection.DelCollection(listBoxCollection.SelectedItem.ToString());
+        _storageCollection.DelCollection(listBoxCollection?.SelectedItem?.ToString());
+        _logger.LogInformation("Удаление коллекции с названием {name}", listBoxCollection.SelectedItem.ToString());
         RefreshListBoxItems();
     }
     /// <summary>
@@ -250,13 +280,16 @@ public partial class FormCarCollection : Form
     {
         if (saveFileDialog.ShowDialog() == DialogResult.OK)
         {
-            if (_storageCollection.SaveData(saveFileDialog.FileName))
+            try
             {
+                _storageCollection.SaveData(saveFileDialog.FileName);
                 MessageBox.Show("Сохранение прошло успешно", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _logger.LogInformation("Сохранение в файл: {fileName}", saveFileDialog.FileName);
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Не сохранилось", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _logger.LogError("Ошибка: {Message}", ex.Message);
             }
         }
     }
@@ -269,15 +302,18 @@ public partial class FormCarCollection : Form
     {
         if (openFileDialog.ShowDialog() == DialogResult.OK)
         {
-            if (_storageCollection.LoadData(openFileDialog.FileName))
+            try
             {
+                _storageCollection.LoadData(openFileDialog.FileName);
                 MessageBox.Show("Загрузка прошла успешно", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 RefreshListBoxItems();
+                _logger.LogInformation("Загрузка из файла: {filename}", openFileDialog.FileName);
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Не сохранилось", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                MessageBox.Show(ex.Message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _logger.LogError("Ошибка: {Message}", ex.Message);
+            }               
         }
     }
 }

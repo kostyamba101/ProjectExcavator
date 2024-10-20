@@ -1,4 +1,5 @@
 ﻿using ProjectExcavator.Drawnings;
+using ProjectExcavator.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,12 +97,11 @@ public class StorageCollection<T>
     /// Сохранение информации по машинам в хранилище в файл
     /// </summary>
     /// <param name="filename"></param>
-    /// <returns></returns>
-    public bool SaveData(string filename)
+    public void SaveData(string filename)
     {
         if (_storages.Count == 0)
         {
-            return false;
+            throw new Exception("В хранилище отсутствуют коллекции для сохранения");
         }
 
         if (File.Exists(filename))
@@ -143,18 +143,17 @@ public class StorageCollection<T>
         using FileStream fs = new(filename, FileMode.Create);
         byte[] info = new UTF8Encoding(true).GetBytes(sb.ToString());
         fs.Write(info, 0, info.Length);
-        return true;
     }
     /// <summary>
     /// Загрузка информации по машинам в хранилище из файла
     /// </summary>
     /// <param name="filename"></param>
     /// <returns></returns>
-    public bool LoadData(string filename)
+    public void LoadData(string filename)
     {
         if (!File.Exists(filename))
         {
-            return false;
+            throw new Exception("Файл не существует");
         }
 
         string bufferTextFromFile = "";
@@ -171,12 +170,11 @@ public class StorageCollection<T>
         string[] strs = bufferTextFromFile.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
         if (strs == null || strs.Length == 0)
         {
-            return false;
+            throw new Exception("В файле нет данных");
         }
         if (!strs[0].Equals(_collectionKey))
         {
-            //если нет никакой записи, то это не те данные
-            return false;
+            throw new Exception("В файле неверные данные");
         }
 
         _storages.Clear();
@@ -192,7 +190,7 @@ public class StorageCollection<T>
             ICollectionGenericObjects<T>? collection = StorageCollection<T>.CreateCollection(collectionType);
             if (collection == null)
             {
-                return false;
+                throw new Exception("Не удалось создать коллекцию");
             }
             collection.MaxCount = Convert.ToInt32(record[2]);
 
@@ -201,16 +199,23 @@ public class StorageCollection<T>
             {
                 if (elem?.CreateDrawningCar() is T car)
                 {
-                    if (!collection.Insert(car))
+                    try
                     {
-                        return false;
+                        if (collection.Insert(car) == -1)
+                        {
+                            throw new Exception("Объект не удалось добавить в коллекцию: " + record[3]);
+                        }
+                    } 
+                    catch (CollectionOverflowException ex)
+                    {
+                        throw new Exception("Коллекция переполнена", ex);
                     }
+                    
                 }
             }
 
             _storages.Add(record[0], collection);
         }
-        return true;
     }
     /// <summary>
     /// Создание коллекции по типу

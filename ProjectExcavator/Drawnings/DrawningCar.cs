@@ -1,6 +1,7 @@
 ﻿using ProjectExcavator.Entities;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,12 +39,12 @@ public class DrawningCar
     /// <summary>
     /// Ширина прорисовки машины
     /// </summary>
-    private readonly int _drawningCarWidth = 80;
+    private readonly int _drawningCarWidth = 110;
 
     /// <summary>
     /// Высота прорисовки машины
     /// </summary>
-    private readonly int _drawingCarHeight = 70;
+    private readonly int _drawingCarHeight = 126;
     /// <summary>
     /// Координата Х объекта
     /// </summary>
@@ -191,6 +192,33 @@ public class DrawningCar
 
     }
 
+    public static GraphicsPath RoundedRect(Graphics g, Rectangle bounds, int radius)
+    {
+        int diameter = radius * 2;
+        Size size = new Size(diameter, diameter);
+        Rectangle arc = new Rectangle(bounds.Location, size);
+        GraphicsPath path = new GraphicsPath();
+
+        if (radius == 0)
+        {
+            path.AddRectangle(bounds);
+            return path;
+        }
+
+        path.AddArc(arc, 180, 90);
+        arc.X = bounds.Right - diameter;
+        path.AddArc(arc, 270, 90);
+        arc.Y = bounds.Bottom - diameter;
+        path.AddArc(arc, 0, 90);
+        arc.X = bounds.Left;
+        path.AddArc(arc, 90, 90);
+
+        g.FillPath(Brushes.Black, path);
+
+        path.CloseFigure();
+        return path;
+    }
+
     /// <summary>
     /// Прорисовка объекта
     /// </summary>
@@ -203,20 +231,73 @@ public class DrawningCar
         }
 
         Pen pen = new(Color.Black);
-        Brush mainBrush = new SolidBrush(EntityCar.MainColor);
 
-        // Границы машины (основной корпус)        
-        g.FillRectangle(mainBrush, _startPosX.Value + 50, _startPosY.Value, 30, 30);
-        g.DrawRectangle(pen, _startPosX.Value + 50, _startPosY.Value, 30, 30);
-        
-        g.FillRectangle(mainBrush, _startPosX.Value + 10, _startPosY.Value + 30, 70, 30);
-        g.DrawRectangle(pen, _startPosX.Value + 10, _startPosY.Value + 30, 70, 30);
+        Brush brBlue = new SolidBrush(Color.LightBlue);
+        Brush brGray = new SolidBrush(Color.Gray);
+        Brush brRed = new SolidBrush(Color.Red);
+        Brush brYellow = new SolidBrush(Color.Yellow);
+        Brush brBlack = new SolidBrush(Color.Black);
+        Brush bodycolor = new SolidBrush(EntityCar.MainColor);
 
-        g.FillRectangle(mainBrush, _startPosX.Value + 10, _startPosY.Value + 50, 70, 20);
-        g.DrawRectangle(pen, _startPosX.Value + 10, _startPosY.Value + 50, 70, 20);
-        
-        g.FillRectangle(mainBrush, _startPosX.Value, _startPosY.Value + 39, 10, 30);
-        g.DrawRectangle(pen, _startPosX.Value, _startPosY.Value + 39, 10, 30);
+
+        int bodyHeight = 90;
+        int cabineHeight = 40;
+        int pipeHeight = 35;
+        int bucketWidth = 10;
+        int pipeWidth = 7;
+
+        int pipeOffsetX = 25;
+        int cabineOffsetX = 50;
+
+        int wheelsOffsetX = 20;
+        int wheelsHeight = 40;
+
+        //кузов
+        g.DrawRectangle(pen, _startPosX.Value + bucketWidth, _startPosY.Value + cabineHeight, bodyHeight, bodyHeight - cabineHeight);
+        g.FillRectangle(bodycolor, _startPosX.Value + bucketWidth, _startPosY.Value + cabineHeight, bodyHeight, bodyHeight - cabineHeight);
+
+        //труба
+        g.DrawRectangle(pen, _startPosX.Value + bucketWidth + pipeOffsetX, _startPosY.Value + cabineHeight - pipeHeight, pipeWidth, pipeHeight);
+        g.FillRectangle(brBlack, _startPosX.Value + bucketWidth + pipeOffsetX, _startPosY.Value + cabineHeight - pipeHeight, pipeWidth, pipeHeight);
+
+        //кабина
+        g.DrawRectangle(pen, _startPosX.Value + bucketWidth + cabineOffsetX, _startPosY.Value, cabineHeight, cabineHeight);
+        g.FillRectangle(brBlue, _startPosX.Value + bucketWidth + cabineOffsetX, _startPosY.Value, cabineHeight, cabineHeight);
+
+        //трак
+        g.DrawPath(pen, RoundedRect(g, new Rectangle(_startPosX.Value, _startPosY.Value + bodyHeight, wheelsOffsetX + bodyHeight, wheelsHeight), 15));
+
+        Pen bPen = new(Color.Black);
+        bPen.Width = 3;
+
+        Rectangle wheel1 = new Rectangle(
+            _startPosX.Value + bucketWidth + wheelsOffsetX - 25,
+            _startPosY.Value + bodyHeight + wheelsHeight / 4,
+            25, 25);
+
+        Rectangle wheel2 = new Rectangle(
+            _startPosX.Value + bucketWidth + (bodyHeight - wheelsOffsetX),
+            _startPosY.Value + bodyHeight + wheelsHeight / 4,
+            25, 25);
+
+        g.DrawEllipse(bPen, wheel1);
+        g.DrawEllipse(bPen, wheel2);
+
+        g.FillEllipse(brBlue, wheel1);
+        g.FillEllipse(brBlue, wheel2);
+
+        //колеса
+        g.DrawEllipse(bPen, _startPosX.Value + bucketWidth + wheelsOffsetX + 5, _startPosY.Value + bodyHeight + wheelsHeight / 2, 13, 13);
+        g.DrawEllipse(bPen, _startPosX.Value + bucketWidth + wheelsOffsetX + 20, _startPosY.Value + bodyHeight + wheelsHeight / 2, 13, 13);
+        g.DrawEllipse(bPen, _startPosX.Value + bucketWidth + wheelsOffsetX + 35, _startPosY.Value + bodyHeight + wheelsHeight / 2, 13, 13);
+        g.FillEllipse(brRed, _startPosX.Value + bucketWidth + wheelsOffsetX + 5, _startPosY.Value + bodyHeight + wheelsHeight / 2, 13, 13);
+        g.FillEllipse(brRed, _startPosX.Value + bucketWidth + wheelsOffsetX + 20, _startPosY.Value + bodyHeight + wheelsHeight / 2, 13, 13);
+        g.FillEllipse(brRed, _startPosX.Value + bucketWidth + wheelsOffsetX + 35, _startPosY.Value + bodyHeight + wheelsHeight / 2, 13, 13);
+
+        g.DrawEllipse(bPen, _startPosX.Value + bucketWidth + wheelsOffsetX + 13, _startPosY.Value + bodyHeight + wheelsHeight / 6, 9, 9);
+        g.DrawEllipse(bPen, _startPosX.Value + bucketWidth + wheelsOffsetX + 28, _startPosY.Value + bodyHeight + wheelsHeight / 6, 9, 9);
+        g.FillEllipse(brYellow, _startPosX.Value + bucketWidth + wheelsOffsetX + 13, _startPosY.Value + bodyHeight + wheelsHeight / 6, 9, 9);
+        g.FillEllipse(brYellow, _startPosX.Value + bucketWidth + wheelsOffsetX + 28, _startPosY.Value + bodyHeight + wheelsHeight / 6, 9, 9);
     }
 
 }

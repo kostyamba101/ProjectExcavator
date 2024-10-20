@@ -24,20 +24,20 @@ public interface ICollectionGenericObjects<T>
     /// </summary>
     /// <param name="obj">Добавляемый объект</param>
     /// <returns>true-вставка прошла успешно, false - вставка не удалась</returns>
-    bool Insert(T obj);
+    int Insert(T obj);
     /// <summary>
     /// Добавление объекта в коллекцию на конкретную позицию
     /// </summary>
     /// <param name="ojb">Добавляемый объект</param>
     /// <param name="position">Позиция</param>
     /// <returns>true-вставка прошла успешно, false - вставка не удалась</returns>
-    bool Insert(T ojb, int position);
+    int Insert(T ojb, int position);
     /// <summary>
     /// Удаление объекта из коллекции с конкретной позиции
     /// </summary>
     /// <param name="position"></param>
     /// <returns>true-удаление прошло успешно, false - удаление не удалась</returns>
-    bool Remove(int position);
+    T? Remove(int position);
     /// <summary>
     /// Получение объекта по позиции
     /// </summary>

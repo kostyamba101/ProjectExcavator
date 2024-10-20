@@ -54,9 +54,9 @@ public abstract class AbstractCompany
     /// <param name="company">Компания</param>
     /// <param name="car">Добавляемый объект</param>
     /// <returns></returns>
-    public static bool operator +(AbstractCompany company, DrawningCar car)
+    public static int operator +(AbstractCompany company, DrawningCar car)
     {
-        return company._collection?.Insert(car) ?? false;
+        return company._collection.Insert(car);
     }
     /// <summary>
     /// Перегрузка оператора удаления для класса
@@ -64,9 +64,9 @@ public abstract class AbstractCompany
     /// <param name="company">Компания</param>
     /// <param name="position">Номер удаляемого объекта</param>
     /// <returns></returns>
-    public static bool operator -(AbstractCompany company, int position)
+    public static DrawningCar operator -(AbstractCompany company, int position)
     {
-        return company._collection?.Remove(position) ?? false;
+        return company._collection.Remove(position);
     }
     /// <summary>
     /// Получение случайного объекта из коллекции
@@ -90,8 +90,15 @@ public abstract class AbstractCompany
         SetObjectsPosition();
         for (int i = 0; i < (_collection?.Count ?? 0); ++i)
         {
-            DrawningCar? obj = _collection?.Get(i);
-            obj?.DrawTransport(graphics);
+            try
+            {
+                DrawningCar? obj = _collection?.Get(i);
+                obj?.DrawTransport(graphics);
+            }
+             catch (Exception ex)
+            {
+                
+            }   
 
         }
         return bitmap;

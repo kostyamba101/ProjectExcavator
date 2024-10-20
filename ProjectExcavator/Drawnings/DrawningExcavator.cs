@@ -27,7 +27,7 @@ public class DrawningExcavator : DrawningCar
         EntityCar = new EntityExcavator(speed, weight, mainColor, optionalColor, hasBusket, hasTube, hasTracks);
     }
 
-    public DrawningExcavator(EntityExcavator excavator) : base(125, 85)
+    public DrawningExcavator(EntityExcavator excavator) : base(150, 126)
     {
         EntityCar = new EntityExcavator(excavator.Speed, excavator.Weight, excavator.MainColor, 
             excavator.OptionalColor, excavator.HasBucket, excavator.HasTube, excavator.HasTracks);
@@ -45,53 +45,54 @@ public class DrawningExcavator : DrawningCar
         }
 
         Pen pen = new(Color.Black);
-        Brush mainBrush = new SolidBrush(excavator.MainColor);
         Brush optionalBrush = new SolidBrush(excavator.OptionalColor);
+        Brush brBlue = new SolidBrush(Color.LightBlue);
+        Brush brGray = new SolidBrush(Color.Gray);
+        Brush brRed = new SolidBrush(Color.Red);
+        Brush brYellow = new SolidBrush(Color.Yellow);
         Brush brBlack = new SolidBrush(Color.Black);
 
-        _startPosX += 40;
-        _startPosY += 20;
+        int bodyHeight = 90;
+        int cabineHeight = 40;
+        int bucketWidth = 30;
+        int wheelsHeight = 40;
+
+        Pen bPen = new(Color.Black);
+        bPen.Width = 3;
+
+        _startPosX += 20;
         base.DrawTransport(g);
-        _startPosX -= 40;
-        _startPosY -= 20;
+        _startPosX -= 20;
 
 
-        // труба            
-        if (excavator.HasTube)
-        {
-            g.FillRectangle(mainBrush, _startPosX.Value + 70, _startPosY.Value + 30, 10, 20);
-            g.DrawRectangle(pen, _startPosX.Value + 70, _startPosY.Value + 30, 10, 20);
-        }
         // ковш
         if (excavator.HasBucket)
         {
-            g.FillRectangle(optionalBrush, _startPosX.Value + 50, _startPosY.Value + 19, 10, 30);
-            g.DrawRectangle(pen, _startPosX.Value + 50, _startPosY.Value + 19, 10, 30);
-            g.FillRectangle(optionalBrush, _startPosX.Value + 10, _startPosY.Value + 19, 50, 10);
-            g.DrawRectangle(pen, _startPosX.Value + 10, _startPosY.Value + 19, 50, 10);
-            g.FillRectangle(optionalBrush, _startPosX.Value + 10, _startPosY.Value + 19, 10, 40);
-            g.DrawRectangle(pen, _startPosX.Value + 10, _startPosY.Value + 19, 10, 40);
-            g.FillRectangle(mainBrush, _startPosX.Value + 20, _startPosY.Value + 50, 10, 10);
-            g.DrawRectangle(pen, _startPosX.Value + 20, _startPosY.Value + 50, 10, 10);
-        }
 
-        // гусеницы            
+            PointF p1 = new Point(_startPosX.Value + bucketWidth, _startPosY.Value + cabineHeight);
+            PointF p2 = new Point(_startPosX.Value, _startPosY.Value + cabineHeight);
+            PointF p3 = new Point(_startPosX.Value + bucketWidth, _startPosY.Value + cabineHeight + bodyHeight / 2);
+
+            g.DrawLine(pen, p1, p2);
+            g.DrawLine(pen, p2, p3);
+            g.DrawLine(pen, p3, p1);
+
+            g.FillPolygon(optionalBrush, [p1, p2, p3]);
+
+        }
+        // опоры
         if (excavator.HasTracks)
         {
-            g.FillEllipse(brBlack, _startPosX.Value + 45, _startPosY.Value + 75, 20, 20);
-            g.DrawEllipse(pen, _startPosX.Value + 45, _startPosY.Value + 75, 20, 20);
 
-            g.FillEllipse(brBlack, _startPosX.Value + 65, _startPosY.Value + 75, 20, 20);
-            g.DrawEllipse(pen, _startPosX.Value + 65, _startPosY.Value + 75, 20, 20);
-
-            g.FillEllipse(brBlack, _startPosX.Value + 85, _startPosY.Value + 75, 20, 20);
-            g.DrawEllipse(pen, _startPosX.Value + 85, _startPosY.Value + 75, 20, 20);
-
-            g.FillEllipse(brBlack, _startPosX.Value + 105, _startPosY.Value + 75, 20, 20);
-            g.DrawEllipse(pen, _startPosX.Value + 105, _startPosY.Value + 75, 20, 20);
-
+            g.DrawLine(bPen,
+                _startPosX.Value + bucketWidth + bodyHeight, _startPosY.Value + cabineHeight + 10,
+                _startPosX.Value + bucketWidth + bodyHeight + 15, _startPosY.Value + cabineHeight + 10);
+            g.DrawLine(bPen,
+                _startPosX.Value + bucketWidth + bodyHeight + 15, _startPosY.Value + cabineHeight + 10,
+                _startPosX.Value + bucketWidth + bodyHeight + 15, _startPosY.Value + bodyHeight + wheelsHeight);
+            g.DrawLine(bPen,
+                _startPosX.Value + bucketWidth + bodyHeight + 15, _startPosY.Value + bodyHeight + wheelsHeight,
+                _startPosX.Value + bucketWidth + bodyHeight + 30, _startPosY.Value + bodyHeight + wheelsHeight);
         }
-
-
     }
 }

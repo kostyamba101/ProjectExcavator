@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectExcavator.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,75 +48,73 @@ public class ArrayGenericObjects<T> : ICollectionGenericObjects<T>
 
     public T? Get(int position)
     {
-        if (position < 0 || position >= _collection.Length)
+        if (position < 0 || position >= Count)
         {
-            return null;
+            throw new PositionOutOfCollectionException(position);
+        }
+        if (_collection[position] == null)
+        {
+            throw new ObjectNotFoundException(position);
         }
         return _collection[position];
     }
 
-    public bool Insert(T obj)
+    public int Insert(T obj)
     {
-        for (int i = 0; i < _collection.Length; i++)
+        return Insert(obj, 0);
+    }
+
+    public int Insert(T obj, int position)
+    {
+        if (position < 0 || position >= _collection.Length)
+        {
+            throw new PositionOutOfCollectionException(position);
+        }
+
+        for (int i = position; i < Count; i++)
         {
             if (_collection[i] == null)
             {
                 _collection[i] = obj;
-                return true;
+                return i;
             }
         }
-        return false;
-    }
 
-    public bool Insert(T obj, int position)
-    {
-        if (position < 0 || position >= _collection.Length)
-        {
-            return false;
-        }
-
-        // Если позиция свободна, вставляем объект
-        if (_collection[position] == null)
-        {
-            _collection[position] = obj;
-            return true;
-        }
-
-        // Поиск ближайшего свободного места после позиции
         for (int i = position + 1; i < _collection.Length; i++)
         {
             if (_collection[i] == null)
             {
                 _collection[i] = obj;
-                return true;
+                return i;
             }
         }
 
-        // Поиск ближайшего свободного места до позиции
         for (int i = position - 1; i >= 0; i--)
         {
             if (_collection[i] == null)
             {
                 _collection[i] = obj;
-                return true;
+                return i;
             }
         }
-        return false;
+        throw new CollectionOverflowException(Count);
     }
 
-    public bool Remove(int position)
+    public T? Remove(int position)
     {
         if (position < 0 || position >= _collection.Length)
         {
-            return false;
+            throw new PositionOutOfCollectionException(position);
         }
 
-        if (_collection[position] != null)
+        if (_collection[position] == null)
         {
-            _collection[position] = null;
-            return true;
+            throw new ObjectNotFoundException(position);
         }
-        return false;
+
+        T? obj = _collection[position];
+        _collection[position] = null;
+        return obj;
     }
 
     public IEnumerable<T?> GetItems()
@@ -126,3 +125,4 @@ public class ArrayGenericObjects<T> : ICollectionGenericObjects<T>
         }
     }
 }
+    

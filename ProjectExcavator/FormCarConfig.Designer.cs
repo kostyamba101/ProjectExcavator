@@ -76,7 +76,7 @@
             groupBoxConfig.Dock = DockStyle.Left;
             groupBoxConfig.Location = new Point(0, 0);
             groupBoxConfig.Name = "groupBoxConfig";
-            groupBoxConfig.Size = new Size(539, 450);
+            groupBoxConfig.Size = new Size(539, 310);
             groupBoxConfig.TabIndex = 0;
             groupBoxConfig.TabStop = false;
             groupBoxConfig.Text = "Параметры";
@@ -254,15 +254,15 @@
             // 
             // pictureBoxObject
             // 
-            pictureBoxObject.Location = new Point(24, 69);
+            pictureBoxObject.Location = new Point(24, 57);
             pictureBoxObject.Name = "pictureBoxObject";
-            pictureBoxObject.Size = new Size(227, 116);
+            pictureBoxObject.Size = new Size(227, 178);
             pictureBoxObject.TabIndex = 1;
             pictureBoxObject.TabStop = false;
             // 
             // buttonAdd
             // 
-            buttonAdd.Location = new Point(561, 202);
+            buttonAdd.Location = new Point(561, 244);
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Size = new Size(94, 29);
             buttonAdd.TabIndex = 2;
@@ -272,7 +272,7 @@
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new Point(685, 202);
+            buttonCancel.Location = new Point(682, 244);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(94, 29);
             buttonCancel.TabIndex = 3;
@@ -287,7 +287,7 @@
             panelObject.Controls.Add(pictureBoxObject);
             panelObject.Location = new Point(537, 0);
             panelObject.Name = "panelObject";
-            panelObject.Size = new Size(263, 196);
+            panelObject.Size = new Size(263, 238);
             panelObject.TabIndex = 4;
             panelObject.DragDrop += PanelObject_DragDrop;
             panelObject.DragEnter += PanelObject_DragEnter;
@@ -322,7 +322,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 310);
             Controls.Add(panelObject);
             Controls.Add(buttonCancel);
             Controls.Add(buttonAdd);

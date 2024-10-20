@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectExcavator.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,49 +51,52 @@ public class ListGenericObjects<T> : ICollectionGenericObjects<T>
     {
         if (position >= Count || position < 0)
         {
-            return null;
+            throw new PositionOutOfCollectionException(position);
         }
         return _collection[position];
     }
 
-    public bool Insert(T obj)
+    public int Insert(T obj)
     {
-        if (Count + 1 > _maxCount)
+        if (Count == _maxCount)
         {
-            return false;
+            throw new CollectionOverflowException(Count);
         }
         _collection.Add(obj);
 
-        return true;
+        return Count;
     }
 
-    public bool Insert(T ojb, int position)
+    public int Insert(T ojb, int position)
     {
 
-        if (Count + 1 > _maxCount)
+        if (Count == _maxCount)
         {
-            return false;
+            throw new CollectionOverflowException(Count);
         }
 
-        if (position < 0 || position > Count)
+        if (position >= Count || position < 0)
         {
-            return false;
+            throw new PositionOutOfCollectionException(position);
         }
 
         _collection.Insert(position, ojb);
+        return position;
 
-        return true;
+
     }
 
-    public bool Remove(int position)
+    public T? Remove(int position)
     {
 
         if (position < 0 || position > Count)
         {
-            return false;
+            throw new PositionOutOfCollectionException(position);
         }
+        T? obj = _collection[position];
         _collection.RemoveAt(position);
-        return true;
+        return obj;
+
     }
 
     public IEnumerable<T?> GetItems()
