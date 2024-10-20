@@ -19,5 +19,4 @@ public class CollectionOverflowException : ApplicationException
     public CollectionOverflowException(string message, Exception exception) : base(message, exception) { }
     protected CollectionOverflowException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
-    
 }

@@ -76,14 +76,19 @@ public partial class FormCarCollection : Form
                 MessageBox.Show("Объект добавлен");
                 pictureBox.Image = _company.Show();
                 _logger.LogInformation("Добавлен объект: " + car.GetDataForSave());
-            }           
+            }
         }
         catch (CollectionOverflowException ex)
         {
             MessageBox.Show(ex.Message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
             _logger.LogError("Ошибка: {Message}", ex.Message);
         }
-       
+        catch (AlreadyInCollectionException ex)
+        {
+            MessageBox.Show(ex.Message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            _logger.LogError("Ошибка: {Message}", ex.Message);
+        }
+
     }
     /// <summary>
     /// Удаление объекта
@@ -217,7 +222,7 @@ public partial class FormCarCollection : Form
         {
             MessageBox.Show("Коллекция не выбрана");
             return;
-        }       
+        }
         if (MessageBox.Show("Удалить коллекцию?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
         {
             return;
@@ -234,7 +239,7 @@ public partial class FormCarCollection : Form
         listBoxCollection.Items.Clear();
         for (int i = 0; i < _storageCollection.Keys?.Count; ++i)
         {
-            string? colName = _storageCollection.Keys?[i];
+            string? colName = _storageCollection.Keys?[i].Name;
             if (!string.IsNullOrEmpty(colName))
             {
                 listBoxCollection.Items.Add(colName);
@@ -313,7 +318,40 @@ public partial class FormCarCollection : Form
             {
                 MessageBox.Show(ex.Message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _logger.LogError("Ошибка: {Message}", ex.Message);
-            }               
+            }
         }
+    }
+    /// <summary>
+    /// Сортировка по типу
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ButtonSortByType_Click(object sender, EventArgs e)
+    {
+        CompareCars(new DrawningCarCompareByType());
+    }
+    /// <summary>
+    /// Сортировка по цвету
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ButtonSortByColor_Click(object sender, EventArgs e)
+    {
+        CompareCars(new DrawningCarCompareByColor());
+    }
+
+    /// <summary>
+    /// Сортировка по сравнителю
+    /// </summary>
+    /// <param name="comparer"></param>
+    private void CompareCars(IComparer<DrawningCar?> comparer)
+    {
+        if (_company == null)
+        {
+            return;
+        }
+
+        _company.Sort(comparer);
+        pictureBox.Image = _company.Show();
     }
 }

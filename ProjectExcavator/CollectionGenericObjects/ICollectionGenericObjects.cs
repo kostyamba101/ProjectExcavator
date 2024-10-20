@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectExcavator.Drawnings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,19 +24,21 @@ public interface ICollectionGenericObjects<T>
     /// Добавление объекта в коллекцию
     /// </summary>
     /// <param name="obj">Добавляемый объект</param>
+    /// <param name="comparer">Сравнение двух объектов</param>
     /// <returns>true-вставка прошла успешно, false - вставка не удалась</returns>
-    int Insert(T obj);
+    int Insert(T obj, IEqualityComparer<T?>? comparer = null);
     /// <summary>
     /// Добавление объекта в коллекцию на конкретную позицию
     /// </summary>
-    /// <param name="ojb">Добавляемый объект</param>
+    /// <param name="obj">Добавляемый объект</param>
     /// <param name="position">Позиция</param>
+    /// <param name="comparer">Сравнение двух объектов</param>
     /// <returns>true-вставка прошла успешно, false - вставка не удалась</returns>
-    int Insert(T ojb, int position);
+    int Insert(T obj, int position, IEqualityComparer<T?>? comparer = null);
     /// <summary>
     /// Удаление объекта из коллекции с конкретной позиции
-    /// </summary>
-    /// <param name="position"></param>
+    /// </summary>    
+    /// <param name="position">Позиция</param>    
     /// <returns>true-удаление прошло успешно, false - удаление не удалась</returns>
     T? Remove(int position);
     /// <summary>
@@ -54,4 +57,10 @@ public interface ICollectionGenericObjects<T>
     /// </summary>
     /// <returns></returns>
     IEnumerable<T?> GetItems();
+
+    /// <summary>
+    /// Сортировка коллекции
+    /// </summary>
+    /// <param name="comparer">Сравниватель объектов</param>
+    void CollectionSort(IComparer<T?>comparer);
 }

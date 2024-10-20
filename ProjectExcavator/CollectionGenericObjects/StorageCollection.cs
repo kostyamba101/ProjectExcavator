@@ -17,11 +17,11 @@ public class StorageCollection<T>
     /// <summary>
     /// Словарь(хранилище) с коллекциями
     /// </summary>
-    readonly Dictionary<string, ICollectionGenericObjects<T>> _storages;
+    readonly Dictionary<CollectionInfo, ICollectionGenericObjects<T>> _storages;
     /// <summary>
     /// Возвращение списка названий коллекций
     /// </summary>
-    public List<string> Keys => _storages.Keys.ToList();
+    public List<CollectionInfo> Keys => _storages.Keys.ToList();
 
     /// <summary>
     /// Ключевое слово, с которого должен начинаться файл
@@ -41,16 +41,17 @@ public class StorageCollection<T>
     /// </summary>
     public StorageCollection()
     {
-        _storages = new Dictionary<string, ICollectionGenericObjects<T>>();
+        _storages = new Dictionary<CollectionInfo, ICollectionGenericObjects<T>>();
     }
     /// <summary>
     /// Добавление коллекции в хранилище
     /// </summary>
-    /// <param name="name">Название коллекции</param>
+    /// <param name="collectionInfo">Информация коллекции</param>
     /// <param name="collectionType">Тип коллекции</param>
     public void AddCollection(string name, CollectionType collectionType)
     {
-        if (name == null || _storages.ContainsKey(name))
+        CollectionInfo collectionInfo = new CollectionInfo(name, collectionType, string.Empty);
+        if (name == null || _storages.ContainsKey(collectionInfo))
         {
             return;
         }
@@ -59,22 +60,23 @@ public class StorageCollection<T>
             case CollectionType.None:
                 return;
             case CollectionType.List:
-                _storages[name] = new ListGenericObjects<T>();
+                _storages[collectionInfo] = new ListGenericObjects<T>();
                 return;
             case CollectionType.Massive:
-                _storages[name] = new ArrayGenericObjects<T>();
+                _storages[collectionInfo] = new ArrayGenericObjects<T>();
                 return;
         }
     }
     /// <summary>
     /// Удаление коллекции
     /// </summary>
-    /// <param name="name">Название коллекции</param>
+    /// <param name="collectionInfo">Информация о коллекции</param>
     public void DelCollection(string name)
     {
-        if (_storages.ContainsKey(name))
+        CollectionInfo collectionInfo = new CollectionInfo(name, CollectionType.None, string.Empty);
+        if (_storages.ContainsKey(collectionInfo))
         {
-            _storages.Remove(name);
+            _storages.Remove(collectionInfo);
         }
     }
     /// <summary>
@@ -86,11 +88,12 @@ public class StorageCollection<T>
     {
         get
         {
-            if (name == null || !_storages.ContainsKey(name))
+            CollectionInfo collectionInfo = new CollectionInfo(name, CollectionType.None, string.Empty);
+            if (name == null || !_storages.ContainsKey(collectionInfo))
             {
                 return null;
             }
-            return _storages[name];
+            return _storages[collectionInfo];
         }
     }
     /// <summary>
@@ -112,7 +115,7 @@ public class StorageCollection<T>
         StringBuilder sb = new();
 
         sb.Append(_collectionKey);
-        foreach (KeyValuePair<string, ICollectionGenericObjects<T>> value in _storages)
+        foreach (KeyValuePair<CollectionInfo, ICollectionGenericObjects<T>> value in _storages)
         {
             sb.Append(Environment.NewLine);
             //не сохраняем пустые коллекции
@@ -121,8 +124,6 @@ public class StorageCollection<T>
                 continue;
             }
             sb.Append(value.Key);
-            sb.Append(_separatorForKeyValue);
-            sb.Append(value.Value.GetCollectionType);
             sb.Append(_separatorForKeyValue);
             sb.Append(value.Value.MaxCount);
             sb.Append(_separatorForKeyValue);
@@ -181,20 +182,22 @@ public class StorageCollection<T>
         foreach (string data in strs)
         {
             string[] record = data.Split(_separatorForKeyValue, StringSplitOptions.RemoveEmptyEntries);
-            if (record.Length != 4)
+            if (record.Length != 3)
             {
                 continue;
             }
+            CollectionInfo? collectionInfo = CollectionInfo.GetCollectionInfo(record[0]) ??
+                throw new Exception("Не удалось определить информацию коллекции: " + record[0]);
 
-            CollectionType collectionType = (CollectionType)Enum.Parse(typeof(CollectionType), record[1]);
-            ICollectionGenericObjects<T>? collection = StorageCollection<T>.CreateCollection(collectionType);
+            ICollectionGenericObjects<T>? collection = StorageCollection<T>.CreateCollection(collectionInfo.CollectionType) ??
+                throw new Exception("Не удалось создать коллекцию ");
             if (collection == null)
             {
                 throw new Exception("Не удалось создать коллекцию");
             }
-            collection.MaxCount = Convert.ToInt32(record[2]);
+            collection.MaxCount = Convert.ToInt32(record[1]);
 
-            string[] set = record[3].Split(_separatorItems, StringSplitOptions.RemoveEmptyEntries);
+            string[] set = record[2].Split(_separatorItems, StringSplitOptions.RemoveEmptyEntries);
             foreach (string elem in set)
             {
                 if (elem?.CreateDrawningCar() is T car)
@@ -205,16 +208,16 @@ public class StorageCollection<T>
                         {
                             throw new Exception("Объект не удалось добавить в коллекцию: " + record[3]);
                         }
-                    } 
+                    }
                     catch (CollectionOverflowException ex)
                     {
                         throw new Exception("Коллекция переполнена", ex);
                     }
-                    
+
                 }
             }
 
-            _storages.Add(record[0], collection);
+            _storages.Add(collectionInfo, collection);
         }
     }
     /// <summary>

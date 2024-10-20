@@ -56,7 +56,7 @@ public abstract class AbstractCompany
     /// <returns></returns>
     public static int operator +(AbstractCompany company, DrawningCar car)
     {
-        return company._collection.Insert(car);
+        return company._collection.Insert(car, new DrawningCarEqutables());
     }
     /// <summary>
     /// Перегрузка оператора удаления для класса
@@ -103,6 +103,9 @@ public abstract class AbstractCompany
         }
         return bitmap;
     }
+
+    public void Sort(IComparer<DrawningCar?> comparer) => _collection?.CollectionSort(comparer);
+
     /// <summary>
     /// Вывод заднего фона
     /// </summary>

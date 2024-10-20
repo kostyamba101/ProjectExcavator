@@ -52,6 +52,8 @@
             loadToolStripMenuItem = new ToolStripMenuItem();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
+            buttonSortByColor = new Button();
+            buttonSortByType = new Button();
             groupBoxTools.SuspendLayout();
             panelCompanyTools.SuspendLayout();
             panelStorage.SuspendLayout();
@@ -66,30 +68,32 @@
             groupBoxTools.Dock = DockStyle.Right;
             groupBoxTools.Location = new Point(840, 28);
             groupBoxTools.Name = "groupBoxTools";
-            groupBoxTools.Size = new Size(250, 720);
+            groupBoxTools.Size = new Size(250, 739);
             groupBoxTools.TabIndex = 0;
             groupBoxTools.TabStop = false;
             groupBoxTools.Text = "Инструменты";
             // 
             // panelCompanyTools
             // 
+            panelCompanyTools.Controls.Add(buttonSortByColor);
+            panelCompanyTools.Controls.Add(buttonSortByType);
             panelCompanyTools.Controls.Add(buttonAddCar);
             panelCompanyTools.Controls.Add(buttonRefresh);
             panelCompanyTools.Controls.Add(maskedTextBoxPosition);
             panelCompanyTools.Controls.Add(buttonGoToCheck);
             panelCompanyTools.Controls.Add(buttonRemoveCar);
             panelCompanyTools.Enabled = false;
-            panelCompanyTools.Location = new Point(0, 372);
+            panelCompanyTools.Location = new Point(0, 366);
             panelCompanyTools.Name = "panelCompanyTools";
-            panelCompanyTools.Size = new Size(256, 351);
+            panelCompanyTools.Size = new Size(256, 367);
             panelCompanyTools.TabIndex = 9;
             // 
             // buttonAddCar
             // 
             buttonAddCar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonAddCar.Location = new Point(3, 13);
+            buttonAddCar.Location = new Point(9, 13);
             buttonAddCar.Name = "buttonAddCar";
-            buttonAddCar.Size = new Size(244, 47);
+            buttonAddCar.Size = new Size(235, 47);
             buttonAddCar.TabIndex = 1;
             buttonAddCar.Text = "Добавление машины";
             buttonAddCar.UseVisualStyleBackColor = true;
@@ -98,9 +102,9 @@
             // buttonRefresh
             // 
             buttonRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonRefresh.Location = new Point(3, 292);
+            buttonRefresh.Location = new Point(9, 205);
             buttonRefresh.Name = "buttonRefresh";
-            buttonRefresh.Size = new Size(244, 47);
+            buttonRefresh.Size = new Size(235, 47);
             buttonRefresh.TabIndex = 7;
             buttonRefresh.Text = "Обновить";
             buttonRefresh.UseVisualStyleBackColor = true;
@@ -108,19 +112,19 @@
             // 
             // maskedTextBoxPosition
             // 
-            maskedTextBoxPosition.Location = new Point(6, 140);
+            maskedTextBoxPosition.Location = new Point(9, 66);
             maskedTextBoxPosition.Mask = "00";
             maskedTextBoxPosition.Name = "maskedTextBoxPosition";
-            maskedTextBoxPosition.Size = new Size(238, 27);
+            maskedTextBoxPosition.Size = new Size(235, 27);
             maskedTextBoxPosition.TabIndex = 3;
             maskedTextBoxPosition.ValidatingType = typeof(int);
             // 
             // buttonGoToCheck
             // 
             buttonGoToCheck.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonGoToCheck.Location = new Point(3, 226);
+            buttonGoToCheck.Location = new Point(9, 152);
             buttonGoToCheck.Name = "buttonGoToCheck";
-            buttonGoToCheck.Size = new Size(244, 47);
+            buttonGoToCheck.Size = new Size(235, 47);
             buttonGoToCheck.TabIndex = 6;
             buttonGoToCheck.Text = "Отправить на полигон";
             buttonGoToCheck.UseVisualStyleBackColor = true;
@@ -129,9 +133,9 @@
             // buttonRemoveCar
             // 
             buttonRemoveCar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonRemoveCar.Location = new Point(3, 173);
+            buttonRemoveCar.Location = new Point(9, 99);
             buttonRemoveCar.Name = "buttonRemoveCar";
-            buttonRemoveCar.Size = new Size(244, 47);
+            buttonRemoveCar.Size = new Size(235, 47);
             buttonRemoveCar.TabIndex = 5;
             buttonRemoveCar.Text = "Удалить машину";
             buttonRemoveCar.UseVisualStyleBackColor = true;
@@ -156,9 +160,9 @@
             // 
             // buttonCreateCompany
             // 
-            buttonCreateCompany.Location = new Point(3, 307);
+            buttonCreateCompany.Location = new Point(6, 307);
             buttonCreateCompany.Name = "buttonCreateCompany";
-            buttonCreateCompany.Size = new Size(238, 29);
+            buttonCreateCompany.Size = new Size(235, 29);
             buttonCreateCompany.TabIndex = 7;
             buttonCreateCompany.Text = "Создать компанию";
             buttonCreateCompany.UseVisualStyleBackColor = true;
@@ -166,9 +170,9 @@
             // 
             // buttonCollectionDel
             // 
-            buttonCollectionDel.Location = new Point(3, 238);
+            buttonCollectionDel.Location = new Point(6, 238);
             buttonCollectionDel.Name = "buttonCollectionDel";
-            buttonCollectionDel.Size = new Size(238, 29);
+            buttonCollectionDel.Size = new Size(235, 29);
             buttonCollectionDel.TabIndex = 6;
             buttonCollectionDel.Text = "Удалить коллекцию";
             buttonCollectionDel.UseVisualStyleBackColor = true;
@@ -236,9 +240,9 @@
             comboBoxSelectorCompany.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxSelectorCompany.FormattingEnabled = true;
             comboBoxSelectorCompany.Items.AddRange(new object[] { "Хранилище" });
-            comboBoxSelectorCompany.Location = new Point(0, 273);
+            comboBoxSelectorCompany.Location = new Point(6, 273);
             comboBoxSelectorCompany.Name = "comboBoxSelectorCompany";
-            comboBoxSelectorCompany.Size = new Size(238, 28);
+            comboBoxSelectorCompany.Size = new Size(232, 28);
             comboBoxSelectorCompany.TabIndex = 0;
             comboBoxSelectorCompany.SelectedIndexChanged += ComboBoxSelectorCompany_SelectedIndexChanged;
             // 
@@ -247,7 +251,7 @@
             pictureBox.Dock = DockStyle.Fill;
             pictureBox.Location = new Point(0, 28);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(840, 720);
+            pictureBox.Size = new Size(840, 739);
             pictureBox.TabIndex = 1;
             pictureBox.TabStop = false;
             // 
@@ -292,11 +296,33 @@
             // 
             openFileDialog.Filter = "txt file | *.txt";
             // 
+            // buttonSortByColor
+            // 
+            buttonSortByColor.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            buttonSortByColor.Location = new Point(9, 311);
+            buttonSortByColor.Name = "buttonSortByColor";
+            buttonSortByColor.Size = new Size(235, 47);
+            buttonSortByColor.TabIndex = 9;
+            buttonSortByColor.Text = "Сортировка по цвету";
+            buttonSortByColor.UseVisualStyleBackColor = true;
+            buttonSortByColor.Click += ButtonSortByColor_Click;
+            // 
+            // buttonSortByType
+            // 
+            buttonSortByType.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            buttonSortByType.Location = new Point(9, 258);
+            buttonSortByType.Name = "buttonSortByType";
+            buttonSortByType.Size = new Size(235, 47);
+            buttonSortByType.TabIndex = 8;
+            buttonSortByType.Text = "Сортировка по типу";
+            buttonSortByType.UseVisualStyleBackColor = true;
+            buttonSortByType.Click += ButtonSortByType_Click;
+            // 
             // FormCarCollection
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1090, 748);
+            ClientSize = new Size(1090, 767);
             Controls.Add(pictureBox);
             Controls.Add(groupBoxTools);
             Controls.Add(menuStrip);
@@ -341,5 +367,7 @@
         private ToolStripMenuItem loadToolStripMenuItem;
         private SaveFileDialog saveFileDialog;
         private OpenFileDialog openFileDialog;
+        private Button buttonSortByColor;
+        private Button buttonSortByType;
     }
 }

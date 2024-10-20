@@ -1,4 +1,5 @@
-﻿using ProjectExcavator.Exceptions;
+﻿using ProjectExcavator.Drawnings;
+using ProjectExcavator.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,16 +60,24 @@ public class ArrayGenericObjects<T> : ICollectionGenericObjects<T>
         return _collection[position];
     }
 
-    public int Insert(T obj)
+    public int Insert(T obj, IEqualityComparer<T?>? comparer = null)
     {
-        return Insert(obj, 0);
+        return Insert(obj, 0, comparer);
     }
 
-    public int Insert(T obj, int position)
+    public int Insert(T obj, int position, IEqualityComparer<T?>? comparer = null)
     {
         if (position < 0 || position >= _collection.Length)
         {
             throw new PositionOutOfCollectionException(position);
+        }
+
+        if (comparer != null)
+        {
+            if (_collection.Contains(obj, comparer))
+            {
+                throw new AlreadyInCollectionException();
+            }
         }
 
         for (int i = position; i < Count; i++)
@@ -124,5 +133,10 @@ public class ArrayGenericObjects<T> : ICollectionGenericObjects<T>
             yield return _collection[i];
         }
     }
+
+    public void CollectionSort(IComparer<T?> comparer)
+    {
+        Array.Sort(_collection, comparer);
+    }
 }
-    
+

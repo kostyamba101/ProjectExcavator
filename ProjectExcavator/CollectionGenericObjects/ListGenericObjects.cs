@@ -1,4 +1,5 @@
-﻿using ProjectExcavator.Exceptions;
+﻿using ProjectExcavator.Drawnings;
+using ProjectExcavator.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,19 +57,34 @@ public class ListGenericObjects<T> : ICollectionGenericObjects<T>
         return _collection[position];
     }
 
-    public int Insert(T obj)
+    public int Insert(T obj, IEqualityComparer<T?>? comparer = null)
     {
+        if (comparer != null)
+        {
+            if (_collection.Contains(obj, comparer))
+            {
+                throw new AlreadyInCollectionException();
+            }
+        }
+
         if (Count == _maxCount)
         {
             throw new CollectionOverflowException(Count);
         }
-        _collection.Add(obj);
 
+        _collection.Add(obj);
         return Count;
     }
 
-    public int Insert(T ojb, int position)
+    public int Insert(T obj, int position, IEqualityComparer<T?>? comparer = null)
     {
+        if (comparer != null)
+        {
+            if (_collection.Contains(obj, comparer))
+            {
+                throw new AlreadyInCollectionException();
+            }
+        }
 
         if (Count == _maxCount)
         {
@@ -80,7 +96,7 @@ public class ListGenericObjects<T> : ICollectionGenericObjects<T>
             throw new PositionOutOfCollectionException(position);
         }
 
-        _collection.Insert(position, ojb);
+        _collection.Insert(position, obj);
         return position;
 
 
@@ -105,5 +121,10 @@ public class ListGenericObjects<T> : ICollectionGenericObjects<T>
         {
             yield return _collection[i];
         }
+    }
+
+    public void CollectionSort(IComparer<T?> comparer)
+    {
+        _collection.Sort(comparer);
     }
 }
