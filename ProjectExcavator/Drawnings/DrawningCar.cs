@@ -242,11 +242,8 @@ public class DrawningCar
 
         int bodyHeight = 90;
         int cabineHeight = 40;
-        int pipeHeight = 35;
-        int bucketWidth = 10;
-        int pipeWidth = 7;
-
-        int pipeOffsetX = 25;
+       
+        int bucketWidth = 10;        
         int cabineOffsetX = 50;
 
         int wheelsOffsetX = 20;
@@ -255,10 +252,6 @@ public class DrawningCar
         //кузов
         g.DrawRectangle(pen, _startPosX.Value + bucketWidth, _startPosY.Value + cabineHeight, bodyHeight, bodyHeight - cabineHeight);
         g.FillRectangle(bodycolor, _startPosX.Value + bucketWidth, _startPosY.Value + cabineHeight, bodyHeight, bodyHeight - cabineHeight);
-
-        //труба
-        g.DrawRectangle(pen, _startPosX.Value + bucketWidth + pipeOffsetX, _startPosY.Value + cabineHeight - pipeHeight, pipeWidth, pipeHeight);
-        g.FillRectangle(brBlack, _startPosX.Value + bucketWidth + pipeOffsetX, _startPosY.Value + cabineHeight - pipeHeight, pipeWidth, pipeHeight);
 
         //кабина
         g.DrawRectangle(pen, _startPosX.Value + bucketWidth + cabineOffsetX, _startPosY.Value, cabineHeight, cabineHeight);

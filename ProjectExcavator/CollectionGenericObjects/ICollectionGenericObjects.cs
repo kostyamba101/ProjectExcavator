@@ -18,6 +18,9 @@ public interface ICollectionGenericObjects<T>
     /// </summary>
     int Count { get; }
 
+    /// <summary>
+    /// Максимальное количество объектов в коллекции
+    /// </summary>
     int MaxCount { get; set; }
 
     /// <summary>

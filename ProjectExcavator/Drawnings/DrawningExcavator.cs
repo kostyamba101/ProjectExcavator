@@ -57,6 +57,10 @@ public class DrawningExcavator : DrawningCar
         int bucketWidth = 30;
         int wheelsHeight = 40;
 
+        int pipeHeight = 35;
+        int pipeWidth = 7;
+        int pipeOffsetX = 25;
+
         Pen bPen = new(Color.Black);
         bPen.Width = 3;
 
@@ -83,7 +87,6 @@ public class DrawningExcavator : DrawningCar
         // опоры
         if (excavator.HasTracks)
         {
-
             g.DrawLine(bPen,
                 _startPosX.Value + bucketWidth + bodyHeight, _startPosY.Value + cabineHeight + 10,
                 _startPosX.Value + bucketWidth + bodyHeight + 15, _startPosY.Value + cabineHeight + 10);
@@ -93,6 +96,13 @@ public class DrawningExcavator : DrawningCar
             g.DrawLine(bPen,
                 _startPosX.Value + bucketWidth + bodyHeight + 15, _startPosY.Value + bodyHeight + wheelsHeight,
                 _startPosX.Value + bucketWidth + bodyHeight + 30, _startPosY.Value + bodyHeight + wheelsHeight);
+        }
+
+        if (excavator.HasTube)
+        {
+            //труба
+            g.DrawRectangle(pen, _startPosX.Value + bucketWidth + pipeOffsetX, _startPosY.Value + cabineHeight - pipeHeight, pipeWidth, pipeHeight);
+            g.FillRectangle(optionalBrush, _startPosX.Value + bucketWidth + pipeOffsetX, _startPosY.Value + cabineHeight - pipeHeight, pipeWidth, pipeHeight);
         }
     }
 }

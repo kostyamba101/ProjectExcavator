@@ -14,15 +14,15 @@ public class DrawningCarCompareByType : IComparer<DrawningCar?>
     {
         if (x == null || x.EntityCar == null)
         {
-            return -1;
+            return 1;
         }
         if (y == null || y.EntityCar == null)
         {
-            return 1;
+            return -1;
         }
         if (x.GetType().Name != y.GetType().Name)
         {
-            return x.GetType().Name.CompareTo(y.GetType().Name); ;
+            return x.GetType().Name.CompareTo(y.GetType().Name); 
         }
         var speedCompare = x.EntityCar.Speed.CompareTo(y.EntityCar.Speed);
         if(speedCompare != 0)
